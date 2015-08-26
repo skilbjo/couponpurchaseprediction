@@ -58,3 +58,7 @@ target/
 
 # Local Data
 data/
+
+# Skilbecks SQL stuff
+sql/data
+sql/node_modules
