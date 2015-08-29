@@ -44,7 +44,7 @@ CREATE TABLE `coupon_list` (
   `USABLE_DATE_HOLIDAY` char(1) DEFAULT NULL,
   `USABLE_DATE_BEFORE_HOLIDAY` char(1) DEFAULT NULL,
   `large_area_name` varchar(30) DEFAULT NULL,
-  `key_name` varchar(8) DEFAULT NULL,
+  `ken_name` varchar(8) DEFAULT NULL,
   `small_area_name` varchar(30) DEFAULT NULL,
   `COUPON_ID_hash` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -59,6 +59,23 @@ DROP TABLE IF EXISTS `coupon_visit`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `coupon_visit` (
   `id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `purchase`
+--
+
+DROP TABLE IF EXISTS `purchase`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `purchase` (
+  `ITEM_COUNT` int(11) DEFAULT NULL,
+  `I_DATE` date DEFAULT NULL,
+  `SMALL_AREA_NAME` varchar(32) DEFAULT NULL,
+  `PURCHASEID_hash` varchar(32) DEFAULT NULL,
+  `USER_ID_hash` varchar(32) DEFAULT NULL,
+  `COUPON_ID_hash` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,6 +95,25 @@ CREATE TABLE `user_list` (
   `PREF_NAME` varchar(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `visit`
+--
+
+DROP TABLE IF EXISTS `visit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `visit` (
+  `PURCHASE_FLG` int(11) DEFAULT NULL,
+  `PURCHASEID_hash` varchar(128) DEFAULT NULL,
+  `I_DATE` date DEFAULT NULL,
+  `PAGE_SERIAL` varchar(45) DEFAULT NULL,
+  `REFERRER_hash` varchar(4000) DEFAULT NULL,
+  `VIEW_COUPON_ID_hash` varchar(128) DEFAULT NULL,
+  `USER_ID_hash` varchar(10) DEFAULT NULL,
+  `SESSION_ID_hash` varchar(128) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -88,4 +124,4 @@ CREATE TABLE `user_list` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-26  0:55:17
+-- Dump completed on 2015-08-29 12:46:29
