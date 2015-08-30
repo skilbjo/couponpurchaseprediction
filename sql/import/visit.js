@@ -10,9 +10,9 @@ var fs 					= require('fs'),
 	connection 		= require('mysql').createConnection({
 	  host     : 'localhost',
 	  user     : 'root',
-	  database : 'coupon'
+	  database : 'coupon_train'
 	}),
-	table				= 'purchase'
+	table				= 'visit'
 	;
 
 if (parse) inFile_Stream.on('data', function(chunk) { data+=chunk; });
@@ -26,14 +26,6 @@ if (parse)
 		});
 	});
 }
-
-var isna = function(WITHDRAW_DATE) {
-	if (WITHDRAW_DATE === 'NA') {
-		return null;
-	} else {
-		return	WITHDRAW_DATE;
-	}
-};
 
 var transform = function() {
 	var parsedData = 	values[0];

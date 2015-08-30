@@ -12,7 +12,7 @@ var fs 					= require('fs'),
 	  user     : 'root',
 	  database : 'coupon'
 	}),
-	table				= 'user_list'
+	table				= 'users'
 	;
 
 if (parse) inFile_Stream.on('data', function(chunk) { data+=chunk; });

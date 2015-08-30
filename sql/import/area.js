@@ -2,7 +2,7 @@ var fs 					= require('fs'),
 	path 					= require('path'),
 	csv 					= require('csv'),
 	dirPath 			= './../data/',
-	file 					= 'coupon_detail_train.csv',
+	file 					= 'coupon_area_test.csv',
 	inFile 				= path.join(dirPath, file),
 	inFile_Stream 	= fs.createReadStream(inFile).setEncoding('utf-8'),
 	values 				= [], insert = [], data = '', 
@@ -10,9 +10,9 @@ var fs 					= require('fs'),
 	connection 		= require('mysql').createConnection({
 	  host     : 'localhost',
 	  user     : 'root',
-	  database : 'coupon_train'
+	  database : 'coupon'
 	}),
-	table				= 'purchase'
+	table				= 'area'
 	;
 
 if (parse) inFile_Stream.on('data', function(chunk) { data+=chunk; });
@@ -32,16 +32,13 @@ var transform = function() {
 	parsedData.filter(function(item, iterator){/* skip headers */ if (iterator === 0) { return false; } else { return true; }
 	}).map(function(item, iterator){
 		var result 							= [],
-			ITEM_COUNT									= item[0],
-			I_DATE											= item[1],
-			SMALL_AREA_NAME							= item[2],
-			PURCHASEID_HASH							= item[3],
-			USER_ID_HASH								= item[4],
-			COUPON_ID_hash							= item[5]
+			SMALL_AREA_NAME							= item[0],
+			PREF_NAME										= item[1],
+			COUPON_ID										= item[2]
 			;
 			
 		result.push(
-			ITEM_COUNT, I_DATE, SMALL_AREA_NAME, PURCHASEID_HASH, USER_ID_HASH, COUPON_ID_hash
+			SMALL_AREA_NAME, PREF_NAME, COUPON_ID
 			);
 
 		return insert.push(result);
@@ -54,8 +51,8 @@ var transform = function() {
 };
 
 
-var sql = 'insert into ' + table + 
-	'(ITEM_COUNT, I_DATE, SMALL_AREA_NAME, PURCHASEID_HASH, USER_ID_HASH, COUPON_ID_hash' +
+var sql = 'insert into ' + table + '('+
+	'SMALL_AREA_NAME, PREF_NAME, COUPON_ID' +
 		') values ?';
 
 var SQLinsert = function(record) {

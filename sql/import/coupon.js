@@ -12,7 +12,7 @@ var fs 					= require('fs'),
 	  user     : 'root',
 	  database : 'coupon'
 	}),
-	table				= 'coupon_list'
+	table				= 'coupon_info'
 	;
 
 if (parse) inFile_Stream.on('data', function(chunk) { data+=chunk; });
@@ -26,14 +26,6 @@ if (parse)
 		});
 	});
 }
-
-var isna = function(WITHDRAW_DATE) {
-	if (WITHDRAW_DATE === 'NA') {
-		return null;
-	} else {
-		return	WITHDRAW_DATE;
-	}
-};
 
 var transform = function() {
 	var parsedData = 	values[0];
