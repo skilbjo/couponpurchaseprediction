@@ -10,7 +10,7 @@ var fs 					= require('fs'),
 	connection 		= require('mysql').createConnection({
 	  host     : 'localhost',
 	  user     : 'root',
-	  database : 'coupon'
+	  database : 'coupon_test'
 	}),
 	table				= 'coupon_info'
 	;
