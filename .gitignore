@@ -57,8 +57,11 @@ docs/_build/
 target/
 
 # Local Data
-#data/
+data/
+
+# Mac
+.DS_Store
 
 # Skilbecks SQL stuff
-#sql/data
+sql/data
 sql/node_modules
