@@ -63,5 +63,6 @@ data/
 .DS_Store
 
 # Skilbecks SQL stuff
+*.csv
 sql/data
 sql/node_modules
