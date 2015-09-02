@@ -2,7 +2,7 @@ var fs 					= require('fs'),
 	path 					= require('path'),
 	csv 					= require('csv'),
 	dirPath 			= './../data/',
-	file 					= 'coupon_list_test.csv',
+	file 					= 'coupon_list_train.csv',
 	inFile 				= path.join(dirPath, file),
 	inFile_Stream 	= fs.createReadStream(inFile).setEncoding('utf-8'),
 	values 				= [], insert = [], data = '', 
@@ -10,7 +10,7 @@ var fs 					= require('fs'),
 	connection 		= require('mysql').createConnection({
 	  host     : 'localhost',
 	  user     : 'root',
-	  database : 'coupon_test'
+	  database : 'coupon_train'
 	}),
 	table				= 'coupon_info'
 	;

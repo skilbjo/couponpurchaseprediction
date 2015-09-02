@@ -6,7 +6,7 @@ var fs 					= require('fs'),
 	inFile 				= path.join(dirPath, file),
 	inFile_Stream 	= fs.createReadStream(inFile).setEncoding('utf-8'),
 	values 				= [], insert = [], data = '', 
-	parse = true, imprt = true, filter = false,
+	parse = true, imprt = false, filter = false,
 	connection 		= require('mysql').createConnection({
 	  host     : 'localhost',
 	  user     : 'root',

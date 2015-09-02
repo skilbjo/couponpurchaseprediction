@@ -64,5 +64,7 @@ data/
 
 # Skilbecks SQL stuff
 *.csv
+sql/db/db/coupon_train_db.sql
+sql/db/db/coupon_train_db.sql.gz
 sql/data
 sql/node_modules

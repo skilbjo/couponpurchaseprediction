@@ -2,20 +2,31 @@ var fs 					= require('fs'),
 	path 					= require('path'),
 	csv 					= require('csv'),
 	dirPath 			= './../data/',
+	// file 					= 'coupon_visit_train.csv',
 	file 					= 'coupon_visit_train.csv',
 	inFile 				= path.join(dirPath, file),
 	inFile_Stream 	= fs.createReadStream(inFile).setEncoding('utf-8'),
 	values 				= [], insert = [], data = '', 
-	parse = true, imprt = false, filter = false,
+	parse = false, imprt = false, filter = false,
 	connection 		= require('mysql').createConnection({
 	  host     : 'localhost',
 	  user     : 'root',
 	  database : 'coupon_train'
 	}),
-	table				= 'visit'
+	table				= 'view'
 	;
 
-if (parse) inFile_Stream.on('data', function(chunk) { data+=chunk; });
+console.log(
+	'File size is too large for data buffer on Google V8 engine that node.js uses \n' +
+	'Must import the file manually with the following mysql syntax: \n\n'
+	);
+
+console.log(
+	'mysql> load data infile \'/Users/jskilbeck/Code/Node/couponpurchaseprediction/sql/data/coupon_visit_train.csv\' \n' +
+	'into table coupon_train.view fields terminated by \',\' ignore 1 lines;'
+);
+
+if (parse) inFile_Stream.on('data', function(chunk) { console.log(chunk) ; data+=chunk; });
 
 if (parse) 
 { 
