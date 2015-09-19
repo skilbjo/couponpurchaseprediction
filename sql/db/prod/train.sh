@@ -13,7 +13,7 @@ pi_db_path="~/sql/coupon"
 pass="root"
 
 # GNU ZIP
-gzip -cf $backup_path/$file_name > $backup_path/$gnu_file
+gzip -f $backup_path/$file_name > $backup_path/$gnu_file
 
 # SSH transfer
 cat $backup_path/$gnu_file | ssh $user_name@$server "cat > $pi_db_path/$gnu_file"
