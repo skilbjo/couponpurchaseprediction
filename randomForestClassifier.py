@@ -19,7 +19,7 @@ train_df = pd.merge(view_tr, coupon_tr, left_on='VIEW_COUPON_ID_hash', right_on=
 train_df = pd.merge(train_df, purchase_tr, left_on='USER_ID_hash', right_on='USER_ID_hash')
 
 # Categorical columns only; remove dates
-columns = ['COUPON_ID_hash', 'USER_ID_hash', 'GENRE_NAME', 'DISCOUNT_PRICE', 'PRICE_RATE',
+desired_columns = ['COUPON_ID_hash', 'USER_ID_hash', 'GENRE_NAME', 'DISCOUNT_PRICE', 'PRICE_RATE',
 	'USABLE_DATE_MON', 'USABLE_DATE_TUE', 'USABLE_DATE_WED', 'USABLE_DATE_THU',
 	'USABLE_DATE_FRI', 'USABLE_DATE_SAT', 'USABLE_DATE_SUN', 'USABLE_DATE_HOLIDAY',
 	'USABLE_DATE_BEFORE_HOLIDAY', 'large_area_name', 'ken_name', 'small_area_name'
@@ -31,13 +31,13 @@ categorical_columns = ['GENRE_NAME', 'USABLE_DATE_MON', 'USABLE_DATE_TUE', 'USAB
 ]
 
 # Set up columns for random forest, train
-features = train_df[columns]
+features = [col for col in train_df.columns if col not in ['USER_ID_hash','PURCHASE_FLG']]	# train_df[categorical_columns]
 x_tr = train_df[features]
 y = train_df['PURCHASE_FLG']
 
 # Train model
 model = RandomForestClassifier(n_jobs=2)
-model.fit(x,y)
+model.fit(x_tr,y)
 
 # Import test data
 coupon_ts = pd.read_csv('{0}coupon_list_test.csv'.format(file_dir))
@@ -52,7 +52,7 @@ x_ts = test_df[features]
 prediction = clf.predict(x_ts)
 
 # Export submission
-submission = test_df.groupby('USER_ID_hash')
+submission = prediction # test_df.groupby('USER_ID_hash')
 submission.to_csv('submission.csv', header=True)
 
 # Done
