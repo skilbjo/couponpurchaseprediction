@@ -19,7 +19,6 @@ patsy==0.3.0
 ptyprocess==0.4
 Pygments==2.0.2
 pyparsing==2.0.3
-PySide==1.2.2
 python-dateutil==2.4.2
 pytz==2015.2
 pyzmq==14.5.0

@@ -30,7 +30,7 @@ categorical_columns = ['GENRE_NAME', 'USABLE_DATE_MON', 'USABLE_DATE_TUE', 'USAB
 	'USABLE_DATE_HOLIDAY', 'USABLE_DATE_BEFORE_HOLIDAY', 'large_area_name', 'ken_name', 'small_area_name'
 ]
 
-factor_columns = ['PAGE_SERIAL','DISCOUNT_PRICE',
+factor_columns = [
 	'USABLE_DATE_MON', 'USABLE_DATE_TUE', 'USABLE_DATE_WED',
 	'USABLE_DATE_THU', 'USABLE_DATE_FRI', 'USABLE_DATE_SAT', 
 	'USABLE_DATE_SUN', 'USABLE_DATE_HOLIDAY', 'USABLE_DATE_BEFORE_HOLIDAY'
@@ -43,22 +43,30 @@ y = train_df['PURCHASE_FLG']
 
 # Train model
 model = RandomForestClassifier(n_jobs=2)
+
+print('Got here!')
 model.fit(x,y)
 
 # Import test data
-coupon_ts = pd.read_csv('{0}coupon_list_test.csv'.format(file_dir))
-view_ts = pd.read_csv('{0}coupon_visit_test.csv'.format(file_dir))
-test_df = pd.merge(pd.merge(view_ts, coupon_ts, left_on='VIEW_COUPON_ID_hash', right_on='COUPON_ID_hash'), users, left_on='USER_ID_hash', right_on='USER_ID_hash')
+# coupon_ts = pd.read_csv('{0}coupon_list_test.csv'.format(file_dir))
+# view_ts = pd.read_csv('{0}coupon_visit_test.csv'.format(file_dir))
+# test_df = pd.merge(pd.merge(view_ts, coupon_ts, left_on='VIEW_COUPON_ID_hash', right_on='COUPON_ID_hash'), users, left_on='USER_ID_hash', right_on='USER_ID_hash')
 
-# Columns for random forest, test
-x_ts = test_df[features]
+# # Columns for random forest, test
+# x_ts = test_df[features]
 
-# Use model on test dataset
-prediction = model.predict(x_ts)
+# # Use model on test dataset
+# prediction = model.predict(x_ts)
+prediction = model.predict_propa(x_ts)
+pos_idx = np.where(model.classes_ == True)[0][0]
+test_df['prediction'] = prediction[:, pos_idx]
 
-# Export submission
-submission = test_df.groupby('USER_ID_hash')
-submission.to_csv('submission.csv', header=True)
+# # Export submission
+def top10(df, n=10, column='predict', merge_column='COUPON_ID_hash'):
+    return ' '.join(df.sort_index(by=column)[-n:][merge_column])
+
+submission = test_df.groupby('USER_ID_hash').apply(top10)
+# submission.to_csv('submission.csv', header=True)
 
 # Done
 print('Finished. Script ran in {0} seconds'.format(time() - start))
