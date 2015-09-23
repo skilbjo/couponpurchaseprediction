@@ -43,25 +43,24 @@ class Get_Price_Rate(BaseEstimator, TransformerMixin):
     def get_feature_names(self):
         return [self.__class__.__name__]
 
-    def fit(self, date_frame, y=None):
+    def fit(self, dataframe, y=None):
         return self
 
-    def transform(self, date_frame):
-        return date_frame["PRICE_RATE"].as_matrix()[None].T.astype(np.float)
+    def transform(self, dataframe):
+        return dataframe['PRICE_RATE'].as_matrix()[None].T.astype(np.float)
 
 
 class Get_Match_Pref(BaseEstimator, TransformerMixin):
     def get_feature_names(self):
         return [self.__class__.__name__]
 
-    def fit(self, date_frame, y=None):
+    def fit(self, dataframe, y=None):
         return self
 
-    def transform(self, date_frame):
-        res_sr = date_frame["PREF_NAME"] == date_frame["ken_name"]
-        return res_sr.as_matrix()[None].T.astype(np.float)
+    def transform(self, dataframe):
+        return dataframe['DISCOUNT_PRICE'].as_matrix()[None].T.astype(np.float)
 
-def results(df, n=10, column='predict', merge_column='COUPON_ID_hash'):
+def results(df, n=10, column='prediction', merge_column='COUPON_ID_hash'):
     return ' '.join(df.sort_index(by=column)[-n:][merge_column])
 
 feature_list = [
@@ -80,14 +79,17 @@ model.fit(x_tr,y)
 
 # Import test data
 coupon_ts = pd.read_csv('{0}coupon_list_test.csv'.format(file_dir))
-view_ts = pd.read_csv('{0}coupon_visit_test.csv'.format(file_dir))
-test_df = pd.merge(pd.merge(view_ts, coupon_ts, left_on='VIEW_COUPON_ID_hash', right_on='COUPON_ID_hash'), users, left_on='USER_ID_hash', right_on='USER_ID_hash')
+coupon_ts['cross'] = 1
+users['cross'] = 1
+#view_ts = pd.read_csv('{0}coupon_visit_test.csv'.format(file_dir))
+test_df = pd.merge(coupon_ts, users, on='cross')
+print('done')
 
 # Columns for random forest, test
 x_ts = feat_union.transform(test_df)
 
 # Use model on test dataset
-prediction = model.predict_propa(x_ts)
+prediction = model.predict_proba(x_ts)
 pos_idx = np.where(model.classes_ == True)[0][0]
 test_df['prediction'] = prediction[:, pos_idx]
 
