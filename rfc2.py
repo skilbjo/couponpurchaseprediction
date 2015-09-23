@@ -1,6 +1,6 @@
 # Libraries
 from sklearn.ensemble import RandomForestClassifier
-from numpy as np
+import numpy as np
 import pandas as pd
 from time import time
 from sklearn.base import BaseEstimator, TransformerMixin
@@ -90,6 +90,15 @@ x_ts = feat_union.transform(test_df)
 prediction = model.predict_propa(x_ts)
 pos_idx = np.where(model.classes_ == True)[0][0]
 test_df['prediction'] = prediction[:, pos_idx]
+
+# rf.fit(train, target)
+#     predicted_probs = [[index + 1, x[1]] for index, x in enumerate(rf.predict_proba(test))]
+    # results = []
+    # for traincv, testcv in cv:
+    #     probas = cfr.fit(train[traincv], target[traincv]).predict_proba(train[testcv])
+#     #     results.append( logloss.llfun(target[testcv], [x[1] for x in probas]) )
+# predicted_probs = ["%f" % x[1] for x in predicted_probs]
+# csv_io.write_delimited_file("random_forest_solution.csv", predicted_probs)
 
 # Export submission
 submission = test_df.groupby('USER_ID_hash').apply(results)
