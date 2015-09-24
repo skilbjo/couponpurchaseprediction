@@ -20,6 +20,7 @@ view_tr = pd.read_csv('{0}coupon_visit_train.csv'.format(file_dir))
 # Set up train dataset
 train_df = pd.merge(pd.merge(view_tr, coupon_tr, left_on='VIEW_COUPON_ID_hash', right_on='COUPON_ID_hash'), purchase_tr, left_on='USER_ID_hash', right_on='USER_ID_hash')
 train_df = pd.merge(train_df, users, how='inner')
+train_df.dropna()
 
 class Price_Rate(BaseEstimator, TransformerMixin):
     def get_feature_names(self):
@@ -81,9 +82,10 @@ feature_list = [
     ('PRICE_RATE', Price_Rate()),
     ('DISCOUNT_PRICE', Disc_Price()),
     ('LOCATION', Location()),
-    ('SATURDAY', Usable_Saturday()),
     ('HOLIDAY', Usable_Holiday())
 ]
+
+    # ('SATURDAY', Usable_Saturday()),
 
 # Set up columns for random forest, train
 feat_union = FeatureUnion(transformer_list=feature_list)
