@@ -52,13 +52,37 @@ class Location(BaseEstimator, TransformerMixin):
         match = df['PREF_NAME'] == df['ken_name']
         return match.as_matrix()[None].T.astype(np.float)
 
+class Usable_Saturday(BaseEstimator, TransformerMixin):
+    def get_feature_names(self):
+        return [self.__class__.__name__]
+
+    def fit(self, df, y=None):
+        return self
+
+    def transform(self, df):
+        df.dropna()
+        return df['USABLE_DATE_SAT'].as_matrix()[None].T.astype(np.float)
+
+class Usable_Holiday(BaseEstimator, TransformerMixin):
+    def get_feature_names(self):
+        return [self.__class__.__name__]
+
+    def fit(self, df, y=None):
+        return self
+
+    def transform(self, df):
+        df.dropna()
+        return df['USABLE_DATE_HOLIDAY'].as_matrix()[None].T.astype(np.float)
+
 def results(df, n=10, column='prediction', merge_column='COUPON_ID_hash'):
     return ' '.join(df.sort_index(by=column)[-n:][merge_column])
 
 feature_list = [
     ('PRICE_RATE', Price_Rate()),
     ('DISCOUNT_PRICE', Disc_Price()),
-    ('LOCATION', Location())
+    ('LOCATION', Location()),
+    ('SATURDAY', Usable_Saturday()),
+    ('HOLIDAY', Usable_Holiday())
 ]
 
 # Set up columns for random forest, train
@@ -87,7 +111,7 @@ test_df['prediction'] = prediction[:, pos_idx]
 
 # Export submission
 submission = test_df.groupby('USER_ID_hash').apply(results)
-submission.to_csv('submission.csv', header=True)
+submission.to_csv('submission2.csv', header=True)
 
 # Done
 print('Finished. Script ran in {0} seconds'.format(time() - start))
